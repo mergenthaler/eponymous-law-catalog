@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">Eponymous Laws App</h1>
+  <p class="lead">Item Catalog App for the FS-Udacity Nanodegree. Here you can view all the laws filtered by a particular category. Log in and to add, or delete items.</p>
+  <hr class="my-4">
+  <a class="btn btn-primary btn-lg" href="{{ url_for('add_category') }}" role="button"><i class="fas fa-plus text-and-icon"></i>New Category</a>
+  <a class="btn btn-primary btn-lg" href="{{ url_for('add_item') }}" role="button"><i class="fas fa-plus text-and-icon"></i>New Item</a>
+</div>
+
+
+<div class="jumbotron">  
+            <div class="row">
+              <div class="col-md-3" style="background-color:rgba(0, 0, 0, 0)">
+                <h2>Category</h2><hr>
+                {% for category in categories %}
+                  <a href="{{ url_for('show_items_in_category', category_id=category.id) }}"><p>{{ category.name }}</p></a>
+                {% endfor %}
+              </div>
+              <div class="offset-md-1"></div>
+              <div class="col-md-8" style="background-color:rgba(0, 0, 0, 0)">
+                <h2>Latest Laws</h2><hr>
+                {% for item in items %}
+                  <a href="{{ url_for('view_item', item_id=item.id) }}"><p>{{ item.name }}</p></a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+</div>
+{% endblock %}

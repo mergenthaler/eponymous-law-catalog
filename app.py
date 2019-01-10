@@ -27,7 +27,8 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open(
+        'client_secrets.json', 'r').read())['web']['client_id']
 
 print(CLIENT_ID)
 
@@ -66,7 +67,6 @@ def gconnect():
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
-        print("FlowEx")
         response = make_response(
             json.dumps('Failed to upgrade the authorization code.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -486,14 +486,25 @@ def delete_category(category_id):
 # JSON Endpoints
 
 # Return JSON of all the items in the catalog.
-@app.route('/api/v1/catalog.json')
+@app.route('/api/v1/catalog/json')
 def show_catalog_json():
     items = session.query(Item).order_by(Item.id.desc())
     return jsonify(catalog=[i.serialize for i in items])
 
 
+# Return JSON of a particular item
+@app.route(
+    '/api/v1/catalog/item/<int:item_id>/json')
+def catalog_item_json(item_id):
+    if exists_item(item_id):
+        item = session.query(Item).filter_by(id=item_id).first()
+        return jsonify(item=item.serialize)
+    else:
+        return jsonify(error='The item does not exist.')
+
+
 # Return JSON of all the categories in the catalog.
-@app.route('/api/v1/categories/JSON')
+@app.route('/api/v1/categories/json')
 def categories_json():
     categories = session.query(Category).all()
     return jsonify(categories=[i.serialize for i in categories])

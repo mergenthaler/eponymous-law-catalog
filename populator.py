@@ -32,7 +32,8 @@ session.commit()
 
 item1 = Item(
     name='Atwoods law',
-    description='Any software that can be written in JavaScript will eventually be written in JavaScript.',
+    description=('Any software that can be written'
+                 'in JS will eventually be written in JS.'),
     category=category1,
     user=user1
 )
@@ -68,7 +69,6 @@ item3 = Item(
 
 session.add(item3)
 session.commit()
-
 
 
 print('Base de datos is populated')
